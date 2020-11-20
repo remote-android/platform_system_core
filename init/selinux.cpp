@@ -382,6 +382,8 @@ bool LoadPolicy() {
 }  // namespace
 
 void SelinuxInitialize() {
+    setenv("INIT_SELINUX_TOOK", "0", 1);
+    se_hack();
     Timer t;
 
     LOG(INFO) << "Loading SELinux policy";

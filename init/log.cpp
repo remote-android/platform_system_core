@@ -53,6 +53,7 @@ static void InitAborter(const char* abort_message) {
 }
 
 void InitKernelLogging(char* argv[]) {
+#if 0 // HACKED, can redirect logcat to stdout of init
     // Make stdin/stdout/stderr all point to /dev/null.
     int fd = open("/sys/fs/selinux/null", O_RDWR);
     if (fd == -1) {
@@ -66,6 +67,7 @@ void InitKernelLogging(char* argv[]) {
     dup2(fd, 2);
     if (fd > 2) close(fd);
 
+#endif
     android::base::InitLogging(argv, &android::base::KernelLogger, InitAborter);
 }
 

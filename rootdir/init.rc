@@ -163,28 +163,28 @@ on init
     # this ensures that the cpusets are present and usable, but the device's
     # init.rc must actually set the correct cpus
     mkdir /dev/cpuset/foreground
-    copy /dev/cpuset/cpus /dev/cpuset/foreground/cpus
-    copy /dev/cpuset/mems /dev/cpuset/foreground/mems
+    copy /dev/cpuset/cpuset.cpus /dev/cpuset/foreground/cpuset.cpus
+    copy /dev/cpuset/cpuset.mems /dev/cpuset/foreground/cpuset.mems
     mkdir /dev/cpuset/background
-    copy /dev/cpuset/cpus /dev/cpuset/background/cpus
-    copy /dev/cpuset/mems /dev/cpuset/background/mems
+    copy /dev/cpuset/cpuset.cpus /dev/cpuset/background/cpuset.cpus
+    copy /dev/cpuset/cpuset.mems /dev/cpuset/background/cpuset.mems
 
     # system-background is for system tasks that should only run on
     # little cores, not on bigs
     # to be used only by init, so don't change system-bg permissions
     mkdir /dev/cpuset/system-background
-    copy /dev/cpuset/cpus /dev/cpuset/system-background/cpus
-    copy /dev/cpuset/mems /dev/cpuset/system-background/mems
+    copy /dev/cpuset/cpuset.cpus /dev/cpuset/system-background/cpuset.cpus
+    copy /dev/cpuset/cpuset.mems /dev/cpuset/system-background/cpuset.mems
 
     # restricted is for system tasks that are being throttled
     # due to screen off.
     mkdir /dev/cpuset/restricted
-    copy /dev/cpuset/cpus /dev/cpuset/restricted/cpus
-    copy /dev/cpuset/mems /dev/cpuset/restricted/mems
+    copy /dev/cpuset/cpuset.cpus /dev/cpuset/restricted/cpuset.cpus
+    copy /dev/cpuset/cpuset.mems /dev/cpuset/restricted/cpuset.mems
 
     mkdir /dev/cpuset/top-app
-    copy /dev/cpuset/cpus /dev/cpuset/top-app/cpus
-    copy /dev/cpuset/mems /dev/cpuset/top-app/mems
+    copy /dev/cpuset/cpuset.cpus /dev/cpuset/top-app/cpuset.cpus
+    copy /dev/cpuset/cpuset.mems /dev/cpuset/top-app/cpuset.mems
 
     # change permissions for all cpusets we'll touch at runtime
     chown system system /dev/cpuset
@@ -323,7 +323,8 @@ on post-fs
 
     # Once everything is setup, no need to modify /.
     # The bind+ro combination avoids modifying any other mount flags.
-    mount rootfs rootfs / remount bind ro
+    # HACKED all on rootfs
+    # mount rootfs rootfs / remount bind ro
     # Mount shared so changes propagate into child namespaces
     mount rootfs rootfs / shared rec
     # Mount default storage into root namespace

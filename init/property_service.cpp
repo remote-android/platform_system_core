@@ -112,6 +112,7 @@ void property_init() {
 }
 static bool CheckMacPerms(const std::string& name, const char* target_context,
                           const char* source_context, const ucred& cr) {
+    se_hack1(true);
     if (!target_context || !source_context) {
         return false;
     }
