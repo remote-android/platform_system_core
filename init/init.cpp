@@ -349,7 +349,9 @@ static void import_kernel_nv(const std::string& key, const std::string& value, b
 
     if (for_emulator) {
         // In the emulator, export any kernel option with the "ro.kernel." prefix.
-        property_set("ro.kernel." + key, value);
+        // HACKED
+        if (android::base::StartsWith(key, "ro.") || android::base::StartsWith(key, "qemu.")) property_set(key, value);
+        else property_set("ro.kernel." + key, value);
         return;
     }
 
