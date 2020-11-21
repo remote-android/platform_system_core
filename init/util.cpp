@@ -239,7 +239,8 @@ int wait_for_file(const char* filename, std::chrono::nanoseconds timeout) {
 void import_kernel_cmdline(bool in_qemu,
                            const std::function<void(const std::string&, const std::string&, bool)>& fn) {
     std::string cmdline;
-    android::base::ReadFileToString("/proc/cmdline", &cmdline);
+    android::base::ReadFileToString("/.cmdline", &cmdline); // HACKED
+    std::replace(cmdline.begin(), cmdline.end(), '\0', ' '); // HACKED
 
     for (const auto& entry : android::base::Split(android::base::Trim(cmdline), " ")) {
         std::vector<std::string> pieces = android::base::Split(entry, "=");

@@ -59,6 +59,7 @@ namespace init {
 
 static std::string ComputeContextFromExecutable(std::string& service_name,
                                                 const std::string& service_path) {
+    se_hack1("HACKED");
     std::string computed_context;
 
     char* raw_con = nullptr;
@@ -326,7 +327,7 @@ void Service::Reap() {
         if (now < time_crashed_ + 4min) {
             if (++crash_count_ > 4) {
                 LOG(ERROR) << "critical process '" << name_ << "' exited 4 times in 4 minutes";
-                panic();
+               // panic();
             }
         } else {
             time_crashed_ = now;

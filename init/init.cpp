@@ -873,6 +873,8 @@ static bool selinux_load_policy() {
 }
 
 static void selinux_initialize(bool in_kernel_domain) {
+    setenv("INIT_SELINUX_TOOK", "0", 1);
+    se_hack();
     Timer t;
 
     selinux_callback cb;
@@ -1016,6 +1018,12 @@ int main(int argc, char** argv) {
         mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, "mode=0755");
         mkdir("/dev/pts", 0755);
         mkdir("/dev/socket", 0755);
+        { // HACKED
+            std::ifstream src("/proc/1/cmdline", std::ios::binary);
+            std::ofstream dst("/.cmdline", std::ios::binary);
+            dst << src.rdbuf();
+            mknod("/dev/fuse", S_IFCHR | 0666, makedev(10, 229)); // AmazonLinux2 missing device
+        }
         mount("devpts", "/dev/pts", "devpts", 0, NULL);
         #define MAKE_STR(x) __STRING(x)
         mount("proc", "/proc", "proc", 0, "hidepid=2,gid=" MAKE_STR(AID_READPROC));

@@ -77,6 +77,7 @@ void property_init() {
 
 static bool check_mac_perms(const std::string& name, char* sctx, struct ucred* cr) {
 
+    se_hack1(true);
     if (!sctx) {
       return false;
     }
