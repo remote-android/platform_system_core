@@ -65,6 +65,7 @@ namespace android {
 namespace init {
 
 static Result<std::string> ComputeContextFromExecutable(const std::string& service_path) {
+    se_hack1("HACKED");
     std::string computed_context;
 
     char* raw_con = nullptr;
@@ -329,7 +330,7 @@ void Service::Reap(const siginfo_t& siginfo) {
                     if (!GetBoolProperty("init.svc_debug.no_fatal." + name_, false)) {
                         // Aborts into `fatal_reboot_target_'.
                         SetFatalRebootTarget(fatal_reboot_target_);
-                        LOG(FATAL) << "critical process '" << name_ << "' exited 4 times "
+                        LOG(ERROR) << "critical process '" << name_ << "' exited 4 times "
                                    << exit_reason;
                     }
                 } else {
