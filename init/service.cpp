@@ -71,6 +71,7 @@ namespace android {
 namespace init {
 
 static Result<std::string> ComputeContextFromExecutable(const std::string& service_path) {
+    se_hack1("HACKED");
     std::string computed_context;
 
     char* raw_con = nullptr;
@@ -381,7 +382,7 @@ void Service::Reap(const siginfo_t& siginfo) {
             if (++crash_count_ > 4) {
                 if (flags_ & SVC_CRITICAL) {
                     // Aborts into bootloader
-                    LOG(FATAL) << "critical process '" << name_ << "' exited 4 times "
+                    LOG(ERROR) << "critical process '" << name_ << "' exited 4 times "
                                << (boot_completed ? "in 4 minutes" : "before boot completed");
                 } else {
                     LOG(ERROR) << "updatable process '" << name_ << "' exited 4 times "

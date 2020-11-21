@@ -653,7 +653,7 @@ int SecondStageMain(int argc, char** argv) {
 
     // Make the time that init started available for bootstat to log.
     property_set("ro.boottime.init", getenv("INIT_STARTED_AT"));
-    property_set("ro.boottime.init.selinux", getenv("INIT_SELINUX_TOOK"));
+    property_set("ro.boottime.init.selinux", "0" /*getenv("INIT_SELINUX_TOOK")*/); // HACKED
 
     // Set libavb version for Framework-only OTA match in Treble build.
     const char* avb_version = getenv("INIT_AVB_VERSION");

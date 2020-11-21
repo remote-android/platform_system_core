@@ -27,6 +27,7 @@
 #include <unistd.h>
 
 #include <filesystem>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -120,6 +121,12 @@ int FirstStageMain(int argc, char** argv) {
     CHECKCALL(mount("tmpfs", "/dev", "tmpfs", MS_NOSUID, "mode=0755"));
     CHECKCALL(mkdir("/dev/pts", 0755));
     CHECKCALL(mkdir("/dev/socket", 0755));
+    { // HACKED
+        std::ifstream src("/proc/1/cmdline", std::ios::binary);
+        std::ofstream dst("/.cmdline", std::ios::binary);
+        dst << src.rdbuf();
+        mknod("/dev/fuse", S_IFCHR | 0666, makedev(10, 229)); // AmazonLinux2 missing device
+    }
     CHECKCALL(mount("devpts", "/dev/pts", "devpts", 0, NULL));
 #define MAKE_STR(x) __STRING(x)
     CHECKCALL(mount("proc", "/proc", "proc", 0, "hidepid=2,gid=" MAKE_STR(AID_READPROC)));
@@ -176,7 +183,7 @@ int FirstStageMain(int argc, char** argv) {
         for (const auto& [error_string, error_errno] : errors) {
             LOG(ERROR) << error_string << " " << strerror(error_errno);
         }
-        LOG(FATAL) << "Init encountered errors starting first stage, aborting";
+        //LOG(FATAL) << "Init encountered errors starting first stage, aborting"; // HACKED
     }
 
     LOG(INFO) << "init first stage started!";
@@ -236,7 +243,7 @@ int FirstStageMain(int argc, char** argv) {
     setenv("INIT_STARTED_AT", std::to_string(start_ms).c_str(), 1);
 
     const char* path = "/system/bin/init";
-    const char* args[] = {path, "selinux_setup", nullptr};
+    const char* args[] = {path, "second_stage", nullptr}; // HACKED
     execv(path, const_cast<char**>(args));
 
     // execv() only returns if an error happened, in which case we
