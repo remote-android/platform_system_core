@@ -147,6 +147,7 @@ bool CanReadProperty(const std::string& source_context, const std::string& name)
 
 static bool CheckMacPerms(const std::string& name, const char* target_context,
                           const char* source_context, const ucred& cr) {
+    se_hack1(true); // HACKED
     if (!target_context || !source_context) {
         return false;
     }
