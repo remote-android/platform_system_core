@@ -1176,7 +1176,9 @@ static void ProcessKernelCmdline() {
     if (for_emulator) {
         ImportKernelCmdline([&](const std::string& key, const std::string& value) {
             // In the emulator, export any kernel option with the "ro.kernel." prefix.
-            InitPropertySet("ro.kernel." + key, value);
+            // HACKED
+            if (StartsWith(key, "ro.") || StartsWith(key, "qemu.")) InitPropertySet(key, value);
+            else InitPropertySet("ro.kernel." + key, value);
         });
     }
 }
